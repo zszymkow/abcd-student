@@ -19,15 +19,18 @@ pipeline {
             steps {
             	script {
             	    echo 'Launching Juice-Shop...'
-                    def juiceShopLaunch = sh(
-                    	script: 'docker run -d -p --rm 3000:3000 juice-shop',
-                    	returnStatus: true
-                    )
-                    if (juiceShopLaunch == 0) {
-                    	echo 'Juice-Shop is running.'
-                    } else {
-                    	error 'Failed to launch Juice-Shop container. Breaking pipeline.'
-                    }
+            	    sh 'docker run -d -p --rm 3000:3000 juice-shop'
+            	
+            	    //echo 'Launching Juice-Shop...'
+                    //def juiceShopLaunch = sh(
+                    //	script: 'docker run -d -p --rm 3000:3000 juice-shop',
+                    //	returnStatus: true
+                    //)
+                    //if (juiceShopLaunch == 0) {
+                    //	echo 'Juice-Shop is running.'
+                    //} else {
+                    //	error 'Failed to launch Juice-Shop container. Breaking pipeline.'
+                    //}
             	}
             }
         }
