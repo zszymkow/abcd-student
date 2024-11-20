@@ -20,7 +20,7 @@ pipeline {
             	script {
             	    echo 'Launching Juice-Shop...'
             	    sh 'docker run --name juice-shop -d --rm -p 3000:3000 bkimminich/juice-shop'
-            	
+            	    sleep 5
             	    //echo 'Launching Juice-Shop...'
                     //def juiceShopLaunch = sh(
                     //	script: 'docker run -d -p --rm 3000:3000 juice-shop',
@@ -40,8 +40,7 @@ pipeline {
             	    echo 'Launching ZAP Passive Scan...'
 		    sh '''
 		    	docker run --name zap \
-				--add-host=host.docker.internal:host-gateway \
-				-v /path/to/dir/with/passive/scan/yaml:/zap/wrk/:rw
+				-v  /home/zszymkow/Desktop/ABC-szkolenie/abcd-lab/.zap:/zap/wrk/:rw
 				-t ghcr.io/zaproxy/zaproxy:stable
 				bash -c "zap.sh -cmd -addonupdate; zap.sh -cmd -addoninstall communityScripts -addoninstall pscanrulesAlpha -addoninstall pscanrulesBeta -autorun /zap/wrk/passive_scan.yaml" || true
 		    '''
