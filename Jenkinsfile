@@ -19,7 +19,7 @@ pipeline {
             steps {
             	script {
             	    echo 'Launching Juice-Shop...'
-            	    sh 'docker run -d -p --rm 3000:3000 juice-shop'
+            	    sh 'docker run --name juice-shop -d --rm -p 3000:3000 bkimminich/juice-shop'
             	
             	    //echo 'Launching Juice-Shop...'
                     //def juiceShopLaunch = sh(
