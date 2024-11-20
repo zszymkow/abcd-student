@@ -54,14 +54,15 @@ pipeline {
             		'''
             	}
             }
-    	   post {
-        	always {
-            		echo 'Saving results...'
-            		archiveArtifacts artifacts: 'scan_results/**/*', fingerprint: true, allowEmptyArchive: true
-            		echo 'Sending reports to DefectDojo...'
-            		defectDojoPublisher(artifact: 'scan_results/zap_xml_report.xml', productName: 'Juice Shop', scanType: 'ZAP Scan', engagementName: 'ziemowit.szymkow@pentacomp.pl')
-            	}
-            }
+           }
         }
+    post {
+       	always {
+    		echo 'Saving results...'
+       		archiveArtifacts artifacts: 'scan_results/**/*', fingerprint: true, allowEmptyArchive: true
+       		echo 'Sending reports to DefectDojo...'
+       		defectDojoPublisher(artifact: 'scan_results/zap_xml_report.xml', productName: 'Juice Shop', scanType: 'ZAP Scan', engagementName: 'ziemowit.szymkow@pentacomp.pl')
+       	}
+ 
     }
 }
