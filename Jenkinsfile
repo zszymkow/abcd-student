@@ -15,22 +15,13 @@ pipeline {
                 }
             }
         }
-        stage('2: Trufflehog Scan') {
+        stage('2: Semgrep Scan') {
             steps {
             	script {
-            	    sh 'trufflehog git https://github.com/zszymkow/abcd-student --branch main --only-verified --json > scan_results/trufflehog_scan_result.json'
+            	    sh 'semgrep scan --config auto --json > scan_results/semgrep_scan_result.json'
 		}
 	   }
 
         }
-    }
-    post {
-       	always {
-    		echo 'Saving results...'
-       		archiveArtifacts artifacts: 'scan_results/**/*', fingerprint: true, allowEmptyArchive: true
-       		echo 'Sending reports to DefectDojo...'
-       		defectDojoPublisher(artifact: 'scan_results/trufflehog_scan_result.json', productName: 'Juice Shop', scanType: 'Trufflehog Scan', engagementName: 'ziemowit.szymkow@pentacomp.pl')
-       	}
- 
-    }    
+    }   
 }
