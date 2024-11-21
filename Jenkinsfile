@@ -21,51 +21,16 @@ pipeline {
             	    echo 'Launching Juice-Shop...'
             	    sh 'docker run --name juice-shop -d --rm -p 3000:3000 bkimminich/juice-shop'
             	    sleep 5
-            	    //echo 'Launching Juice-Shop...'
-                    //def juiceShopLaunch = sh(
-                    //	script: 'docker run -d -p --rm 3000:3000 juice-shop',
-                    //	returnStatus: true
-                    //)
-                    //if (juiceShopLaunch == 0) {
-                    //	echo 'Juice-Shop is running.'
-                    //} else {
-                    //	error 'Failed to launch Juice-Shop container. Breaking pipeline.'
-                    //}
             	}
             }
         }
-        stage('3: ZAP Passive Scan') {
+        stage('3: OSV Scan') {
             steps {
             	script {
-            	    echo 'Launching ZAP Passive Scan...'
-		    sh '''
-		    	docker run --name zap \
-		    		--add-host=host.docker.internal:host-gateway \
-				-v  /home/zszymkow/Desktop/ABC-szkolenie/abcd-lab/resources/DAST/zap/:/zap/wrk/:rw \
-				-t ghcr.io/zaproxy/zaproxy:stable \
-				bash -c "zap.sh -cmd -addonupdate; zap.sh -cmd -addoninstall communityScripts -addoninstall pscanrulesAlpha -addoninstall pscanrulesBeta -autorun /zap/wrk/passive_scan.yaml" || true
-		    '''
+            	    sh 'osv-scanner scan --lockfile package-lock.json'
 		}
 	   }
-    	   post {
-        	always {
-            		sh '''
-                		docker cp zap:/zap/wrk/reports/zap_html_report.html ${WORKSPACE}/scan_results/zap_html_report.html
-                		docker cp zap:/zap/wrk/reports/zap_xml_report.xml ${WORKSPACE}/scan_results/zap_xml_report.xml
-                		docker stop zap juice-shop
-                		docker rm zap
-            		'''
-            	}
-            }
-           }
+
         }
-    post {
-       	always {
-    		echo 'Saving results...'
-       		archiveArtifacts artifacts: 'scan_results/**/*', fingerprint: true, allowEmptyArchive: true
-       		echo 'Sending reports to DefectDojo...'
-       		defectDojoPublisher(artifact: 'scan_results/zap_xml_report.xml', productName: 'Juice Shop', scanType: 'ZAP Scan', engagementName: 'ziemowit.szymkow@pentacomp.pl')
-       	}
- 
     }
 }
