@@ -18,7 +18,7 @@ pipeline {
         stage('2: Trufflehog Scan') {
             steps {
             	script {
-            	    sh 'trufflehog https://github.com/zszymkow/abcd-student --since-comit main --branch main --only-verified --fail'
+            	    sh 'trufflehog git https://github.com/zszymkow/abcd-student --since-comit main --branch main --only-verified --fail'
 		}
 	   }
 
