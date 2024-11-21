@@ -32,4 +32,13 @@ pipeline {
 
         }
     }
+    post {
+       	always {
+    		echo 'Saving results...'
+       		archiveArtifacts artifacts: 'scan_results/**/*', fingerprint: true, allowEmptyArchive: true
+       		echo 'Sending reports to DefectDojo...'
+       		defectDojoPublisher(artifact: 'scan_results/osv_scan_report.json', productName: 'Juice Shop', scanType: 'OSV Scan', engagementName: 'ziemowit.szymkow@pentacomp.pl')
+       	}
+ 
+    }    
 }
