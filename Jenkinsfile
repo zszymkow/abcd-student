@@ -18,7 +18,7 @@ pipeline {
         stage('2: OSV Scan') {
             steps {
             	script {
-            	    sh 'osv-scanner scan --lockfile package-lock.json --json > osv_scan_report.json || true'
+            	    sh 'osv-scanner scan --lockfile package-lock.json --json > /scan_results/osv_scan_report.json || true'
 		}
 	   }
 
@@ -26,7 +26,7 @@ pipeline {
         stage('3: Print the result') {
             steps {
             	script {
-            	    sh 'cat osv_scan_report.json'
+            	    sh 'cat /scan_results/osv_scan_report.json'
 		}
 	   }
 
