@@ -27,7 +27,7 @@ pipeline {
         stage('3: OSV Scan') {
             steps {
             	script {
-            	    sh 'osv-scanner scan --lockfile package-lock.json > ${WORKSPACE}/scan_results/osv_scan_report.json' || true
+            	    sh 'osv-scanner scan --lockfile package-lock.json > ${WORKSPACE}/scan_results/osv_scan_report.json || true'
 		}
 	   }
 
