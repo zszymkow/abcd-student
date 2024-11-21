@@ -23,5 +23,13 @@ pipeline {
 	   }
 
         }
+    }
+    post {
+       	always {
+    		echo 'Saving results...'
+       		archiveArtifacts artifacts: 'scan_results/**/*', fingerprint: true, allowEmptyArchive: true
+       		echo 'Sending reports to DefectDojo...'
+       		defectDojoPublisher(artifact: 'scan_results/semgrep_scan_result.json', productName: 'Juice Shop', scanType: 'Semgrep JSON Report', engagementName: 'ziemowit.szymkow@pentacomp.pl')
+       	}
     }   
 }
