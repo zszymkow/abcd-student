@@ -15,30 +15,13 @@ pipeline {
                 }
             }
         }
-        stage('2: OSV Scan') {
+        stage('2: Trufflehog Scan') {
             steps {
             	script {
-            	    sh 'osv-scanner scan --lockfile package-lock.json --json > scan_results/osv_scan_report.json || true'
+            	    sh 'own-secret trufflehog filesystem foo.txt --config config.yaml'
 		}
 	   }
 
         }
-        stage('3: Print the result') {
-            steps {
-            	script {
-            	    sh 'cat scan_results/osv_scan_report.json'
-		}
-	   }
-
-        }
-    }
-    post {
-       	always {
-    		echo 'Saving results...'
-       		archiveArtifacts artifacts: 'scan_results/**/*', fingerprint: true, allowEmptyArchive: true
-       		echo 'Sending reports to DefectDojo...'
-       		defectDojoPublisher(artifact: 'scan_results/osv_scan_report.json', productName: 'Juice Shop', scanType: 'OSV Scan', engagementName: 'ziemowit.szymkow@pentacomp.pl')
-       	}
- 
-    }    
+    } 
 }
