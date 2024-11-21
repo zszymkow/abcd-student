@@ -18,7 +18,7 @@ pipeline {
         stage('2: Trufflehog Scan') {
             steps {
             	script {
-            	    sh 'own-secret trufflehog filesystem foo.txt --config config.yaml'
+            	    sh 'trufflehog https://github.com/zszymkow/abcd-student --since-comit main --branch main --only-verified --fail'
 		}
 	   }
 
