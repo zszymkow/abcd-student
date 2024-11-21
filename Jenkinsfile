@@ -23,10 +23,10 @@ pipeline {
 	   }
 
         }
-        stage('3: Check if report file exists') {
+        stage('3: Print the result') {
             steps {
             	script {
-            	    sh 'ls -al'
+            	    sh 'cat osv_scan_report.json'
 		}
 	   }
 
