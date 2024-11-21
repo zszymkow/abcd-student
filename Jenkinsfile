@@ -18,8 +18,15 @@ pipeline {
         stage('2: OSV Scan') {
             steps {
             	script {
-            	    sh 'osv-scanner scan --lockfile package-lock.json > osv_scan_report.json'
-            	    sh 'ls -la'
+            	    sh 'osv-scanner scan --lockfile package-lock.json --json > osv_scan_report.json'
+		}
+	   }
+
+        }
+        stage('3: Check if report file exists') {
+            steps {
+            	script {
+            	    sh 'ls -al'
 		}
 	   }
 
