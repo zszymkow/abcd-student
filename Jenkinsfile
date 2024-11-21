@@ -19,6 +19,7 @@ pipeline {
             steps {
             	script {
             	    sh 'osv-scanner scan --lockfile package-lock.json > osv_scan_report.json'
+            	    sh 'ls -la'
 		}
 	   }
 
